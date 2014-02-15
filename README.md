@@ -1,4 +1,4 @@
-#std::string extension
+std::string extension
 ======================
 
 This header file adds some template functions to make string's operations easier.
