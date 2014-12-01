@@ -14,6 +14,8 @@ st[0] = "Hey people !"
 st[1] = "Here's a little std::string extension !"
 ```
 
+Other examples are available in examples folder.
+
 ##License
 
     Copyright (c) 2014 Guillaume Gomez
