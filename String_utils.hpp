@@ -8,10 +8,10 @@
 
 /*
  * Developed by imperio.
- * This header file has been created to make easier operation on string.
+ * This header file has been created to make operations on string easier.
  */
 
-namespace String_utils
+namespace string_utils
 {
   // get a value from a string, for example :
   // getValueFromString<int>("42") -> 42
