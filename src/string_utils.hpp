@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __STRING_UTILS__
+#define __STRING_UTILS__
 
 #include <string>
 #include <sstream>
@@ -9,6 +10,17 @@
 /*
  * Developed by imperio.
  * This header file has been created to make operations on string easier.
+ * 
+ * List of functions:
+ * - getValueFromString
+ * - toString
+ * - split
+ * - join
+ * - getBetween
+ * - getListOfItem
+ * - replace
+ * - numberOfOccurence
+ * - truncate
  */
 
 namespace string_utils
@@ -52,7 +64,7 @@ namespace string_utils
   // toString<int>(42) -> "42"
   // toString<float>(42.4f) -> "42.4f"
   template<typename T>
-  std::string   toString(T var)
+  std::string   toString(T const &var)
   {
     std::ostringstream  oss;
     std::string     s;
@@ -67,13 +79,13 @@ namespace string_utils
   // if you want to keep empty parts, just set the last argument to true, example :
   // split<std::string>("salut les   amis", " ", true) -> std::vector<std::string>{"salut", "les", "", "", "amis"}
   template<typename T>
-  std::vector<T>  split(std::string const &str, const char *key, bool keepEmptyPart = false)
+  std::vector<T>  split(T const &value, const char *key, bool keepEmptyPart = false)
   {
     std::vector<T>  result;
     size_t          pos;
     std::string     sub;
     int             size;
-    std::string     copy(str);
+    std::string     copy(toString<T>(value));
 
     if (!key)
       return result;
@@ -91,26 +103,9 @@ namespace string_utils
   }
 
   template<typename T>
-  std::vector<T>  split(const char *str, const char *key, bool keepEmptyPart = false)
+  std::vector<T>  split(T const &value, std::string const &key, bool keepEmptyPart = false)
   {
-    std::string     st;
-
-    if (!str)
-      return split<T>(st, key, keepEmptyPart);
-    st = str;
-    return split<T>(st, key, keepEmptyPart);
-  }
-
-  template<typename T>
-  std::vector<T>  split(const char *s, std::string const &key, bool keepEmptyPart = false)
-  {
-    return split<T>(s, key.c_str(), keepEmptyPart);
-  }
-
-  template<typename T>
-  std::vector<T>  split(std::string const &str, std::string const &key, bool keepEmptyPart = false)
-  {
-    return split<T>(str, key.c_str(), keepEmptyPart);
+    return split<T>(value, key.c_str(), keepEmptyPart);
   }
 
   // join every elements of the vector in a single string,
@@ -118,7 +113,7 @@ namespace string_utils
   // join<std::string>(std::vector<std::string>{"salut", "les", "amis"}, "/") ->
   // "salut/les/amis"
   template<typename T>
-  std::string   join(std::vector<T> const &c, const char *separator)
+  std::string join(std::vector<T> const &c, const char *separator)
   {
     std::ostringstream  os;
     unsigned int    i(0);
@@ -137,7 +132,7 @@ namespace string_utils
   }
 
   template<typename T>
-  std::string   join(std::vector<T> const &c, std::string const &separator)
+  std::string join(std::vector<T> const &c, std::string const &separator)
   {
     return join<T>(c, separator.c_str());
   }
@@ -181,7 +176,7 @@ namespace string_utils
     int             length(key2 ? strlen(key2) : 0);
 
     str = getBetween<T>(st, key1, key2);
-    for (;!str.empty(); str = getBetween<T>(st, key1, key2))
+    for (; !str.empty(); str = getBetween<T>(st, key1, key2))
       {
         vec.push_back(str);
         if ((find = st.find(key1)) == std::string::npos)
@@ -205,32 +200,32 @@ namespace string_utils
   // in the given argument (s), example :
   // replace<std::string>("salut les d'jeuns !", " ", "/") -> "salut/les/d'jeuns/!"
   template<typename T>
-  std::string replace(T &s, const char *toReplace, const char *replacement)
+  std::string replace(T const &s, const char *toReplace, const char *replacement)
   {
     std::vector<T>  vec;
 
     if (!toReplace || !replacement)
-      return s;
+      return toString<T>(s);
     vec = split<T>(s, toReplace);
     return join<T>(vec, replacement);
   }
 
   template<typename T>
-  std::string replace(T &s, std::string const &toReplace,
+  std::string replace(T const &s, std::string const &toReplace,
                       std::string const &replacement)
   {
     return replace<T>(s, toReplace.c_str(), replacement.c_str());
   }
 
   template<typename T>
-  std::string replace(T &s, const char *toReplace,
+  std::string replace(T const &s, const char *toReplace,
                       std::string const &replacement)
   {
     return replace<T>(s, toReplace, replacement.c_str());
   }
 
   template<typename T>
-  std::string replace(T &s, std::string const &toReplace,
+  std::string replace(T const &s, std::string const &toReplace,
                       const char *replacement)
   {
     return replace<T>(s, toReplace.c_str(), replacement);
@@ -263,4 +258,17 @@ namespace string_utils
       return 0;
     return numberOfOccurence<T>(tmp, toFind);
   }
+
+  // truncate the given parameter at the given position
+  template<typename T>
+  T truncate(T &s, unsigned int position)
+  {
+    std::string tmp = toString<T>(s);
+
+    if (position < tmp.length())
+      tmp.resize(position);
+    return getValueFromString<T>(tmp);
+  }
 }
+
+#endif
