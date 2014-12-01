@@ -7,7 +7,7 @@ To use it, just add to your project and it's good. Example :
 
 ```c
 std::string text = "Hey people !\nHere's a little std::string extension !"
-std::vector<std::string> st = String_utils::split<std::string>(text, "\n");
+std::vector<std::string> st = string_utils::split<std::string>(text, "\n");
 
 //Results :
 st[0] = "Hey people !"
