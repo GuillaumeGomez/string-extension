@@ -9,15 +9,22 @@ int main()
   std::vector<std::string> v;
   std::vector<int> v2;
   int value = 4578;
+  std::string str_value = "4578";
 
-  v = string_utils::split<std::string>(s, " ");
+  v = string_utils::split<std::string, std::string>(s, " ");
   std::cout << "split function with \" \" split key, vector output:" << std::endl;
   for (std::vector<std::string>::iterator it = v.begin(); it != v.end(); ++it)
     std::cout << *it << std::endl;
 
   std::cout << "========" << std::endl;
-  v2 = string_utils::split<int>(value, "7");
+  v2 = string_utils::split<int, int>(value, "7");
   std::cout << "split function with \"7\" split key and integer parameter, vector output:" << std::endl;
+  for (std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it)
+    std::cout << *it << std::endl;
+
+  std::cout << "========" << std::endl;
+  v2 = string_utils::split<std::string, int>(str_value, "7");
+  std::cout << "split function with \"7\" split key and string parameter, vector output:" << std::endl;
   for (std::vector<int>::iterator it = v2.begin(); it != v2.end(); ++it)
     std::cout << *it << std::endl;
 
