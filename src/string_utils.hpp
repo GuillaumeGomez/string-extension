@@ -1,14 +1,5 @@
-#ifndef __STRING_UTILS__
-#define __STRING_UTILS__
-
-#include <string>
-#include <sstream>
-#include <vector>
-#include <iostream>
-#include <cstring>
-
 /*
- * Developed by imperio.
+ * Developed by Guillaume Gomez <guillaume.gomez@gmail.com>.
  * This header file has been created to make operations on string easier.
  * 
  * List of functions:
@@ -22,6 +13,15 @@
  * - numberOfOccurence
  * - truncate
  */
+
+#ifndef __STRING_UTILS__
+#define __STRING_UTILS__
+
+#include <string>
+#include <sstream>
+#include <vector>
+#include <iostream>
+#include <cstring>
 
 namespace string_utils
 {
@@ -78,10 +78,10 @@ namespace string_utils
   // split<std::string>("salut les   amis", " ") -> std::vector<std::string>{"salut", "les", "amis"}
   // if you want to keep empty parts, just set the last argument to true, example :
   // split<std::string>("salut les   amis", " ", true) -> std::vector<std::string>{"salut", "les", "", "", "amis"}
-  template<typename T>
-  std::vector<T>  split(T const &value, const char *key, bool keepEmptyPart = false)
+  template<typename T, typename U>
+  std::vector<U>  split(T const &value, const char *key, bool keepEmptyPart = false)
   {
-    std::vector<T>  result;
+    std::vector<U>  result;
     size_t          pos;
     std::string     sub;
     int             size;
@@ -95,17 +95,17 @@ namespace string_utils
         sub = copy.substr(0, pos);
         copy.erase(0, pos + size);
         if (!sub.empty() || keepEmptyPart)
-          result.push_back(getValueFromString<T>(sub));
+          result.push_back(getValueFromString<U>(sub));
       }
     if (copy != "")
-      result.push_back(getValueFromString<T>(copy));
+      result.push_back(getValueFromString<U>(copy));
     return result;
   }
 
-  template<typename T>
-  std::vector<T>  split(T const &value, std::string const &key, bool keepEmptyPart = false)
+  template<typename T, typename U>
+  std::vector<U>  split(T const &value, std::string const &key, bool keepEmptyPart = false)
   {
-    return split<T>(value, key.c_str(), keepEmptyPart);
+    return split<T, U>(value, key.c_str(), keepEmptyPart);
   }
 
   // join every elements of the vector in a single string,
@@ -206,7 +206,7 @@ namespace string_utils
 
     if (!toReplace || !replacement)
       return toString<T>(s);
-    vec = split<T>(s, toReplace);
+    vec = split<T, T>(s, toReplace);
     return join<T>(vec, replacement);
   }
 
